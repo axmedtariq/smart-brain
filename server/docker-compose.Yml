@@ -1,0 +1,47 @@
+version: '19.03.0'
+
+services:
+  # Backend Api Building With Docker
+  smart-brain-api:
+    container_name: backend
+    command: yarn start
+    build: ./
+    working_dir: /usr/src/smart-brain-api
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Som123
+      POSTGRES_DB: SmartBrain
+      POSTGRES_HOST: localhost
+      PGUSER: "Tariq"
+    links:
+      - postgres
+    ports:
+      - "3000:3000"
+    volumes:
+        - ./:/usr/src/smart-brain-api
+# postgres Database Building with Docker
+version: "15.0"
+services:
+  db:
+    image: postgres:9.6
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Som123
+      POSTGRES_DB: SmartBrain
+      POSTGRES_HOST: localhost
+      PGUSER: "Tariq"
+    
+    ports: 
+      - "5432:5432"
+    
+    healthcheck:
+      #CHANGE 1: this command checks if the database is ready, right on the source db server
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    
+
+    
